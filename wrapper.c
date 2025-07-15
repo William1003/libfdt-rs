@@ -182,8 +182,12 @@ void fdt_set_memory(void *fdt, uint64_t region_num,
   fdt32_t addr[FDT_MEMORY_REGION_MAX * 3];
   for (uint64_t i = 0; i < region_num; ++i)
   {
-    addr[3 * i] = cpu_to_fdt64(regions[i].ipa_start);
-    addr[3 * i + 2] = cpu_to_fdt32(regions[i].length);
+      uint64_t base = regions[i].ipa_start;
+      uint32_t size = regions[i].length;
+
+      addr[3 * i]     = cpu_to_fdt32((u32)(base >> 32));       // 高 32 位
+      addr[3 * i + 1] = cpu_to_fdt32((u32)(base & 0xFFFFFFFF)); // 低 32 位
+      addr[3 * i + 2] = cpu_to_fdt32(size);    
   }
   r = fdt_setprop(fdt, node, "reg", addr,
                   (int)region_num * 3 * (int)sizeof(fdt32_t));
