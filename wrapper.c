@@ -179,14 +179,14 @@ void fdt_set_memory(void *fdt, uint64_t region_num,
     return;
   }
 
-  fdt64_t addr[FDT_MEMORY_REGION_MAX * 2];
+  fdt32_t addr[FDT_MEMORY_REGION_MAX * 3];
   for (uint64_t i = 0; i < region_num; ++i)
   {
     addr[2 * i] = cpu_to_fdt64(regions[i].ipa_start);
-    addr[2 * i + 1] = cpu_to_fdt64(regions[i].length);
+    addr[2 * i + 1] = cpu_to_fdt32(regions[i].length);
   }
   r = fdt_setprop(fdt, node, "reg", addr,
-                  (int)region_num * 2 * (int)sizeof(fdt64_t));
+                  (int)region_num * 3 * (int)sizeof(fdt32_t));
   if (r < 0)
   {
     return;
