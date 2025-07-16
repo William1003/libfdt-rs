@@ -225,11 +225,11 @@ int fdt_setup_gic(void *fdt, uint64_t gicd_addr, uint64_t gicc_addr,
         return 0;
     }
   }
-  fdt64_t addr[4] = {
-      cpu_to_fdt64(gicd_addr),
-      cpu_to_fdt64(0x1000),
-      cpu_to_fdt64(gicc_addr),
-      cpu_to_fdt64(0x2000),
+  fdt32_t addr[4] = {
+      cpu_to_fdt32((uint32_t)gicd_addr),
+      cpu_to_fdt32(0x1000),
+      cpu_to_fdt32((uint32_t)gicc_addr),
+      cpu_to_fdt32(0x2000),
   };
   r = fdt_setprop(fdt, node, "reg", addr, sizeof(addr));
   fdt_nop_property(fdt, node, "interrupts");
